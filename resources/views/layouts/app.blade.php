@@ -13,6 +13,9 @@
 
 
         <div class="container">
+        {{-- エラーメッセージ --}}
+            @include('commons.error_messages')
+            
             @yield('content')
         </div>
 

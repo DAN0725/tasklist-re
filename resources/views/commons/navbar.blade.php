@@ -10,9 +10,28 @@
         <div class="collapse navbar-collapse" id="nav-bar">
             <ul class="navbar-nav mr-auto"></ul>
             <ul class="navbar-nav">
-                {{-- メッセージ作成ページへのリンク --}}
-                <li class="nav-item">{!! link_to_route('tasks.create', '新規メッセージの投稿', [], ['class' => 'nav-link']) !!}</li>
-            </ul>
+                @if (Auth::check())
+                 {{-- ユーザ一覧ページへのリンク --}}
+                 <li class="nav-item"><a href="#" class="nav-link">Users</a></li>
+                 <li class="nav-item dropdown">
+                         <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">{{ Auth::user()->name }}</a>
+                         <ul class="dropdown-menu dropdown-menu-right">
+                            {{-- ユーザ詳細ページへのリンク --}}
+                            <li class="dropdown-item"><a href="#">My profile</a></li>
+                            <li class="dropdown-divider"></li>
+                            {{-- ログアウトへのリンク --}}
+                            <li class="dropdown-item">{!! link_to_route('logout.get', 'Logout') !!}</li>
+                                {{-- メッセージ作成ページへのリンク --}}
+                            <li class="nav-item">{!! link_to_route('tasks.create', '新規メッセージの投稿', [], ['class' => 'nav-link']) !!}</li>
+                        </ul>
+                 </li>            
+                @else
+                {{-- ユーザ登録ページへのリンク --}}
+                <li>{!! link_to_route('signup.get', 'Signup', [], ['class' => 'nav-link']) !!}</li>
+                {{-- ログインページへのリンク --}}
+                <li><a href="#">Login</a></li>
+                @endif
+            </ul>    
         </div>
     </nav>
 </header>
