@@ -19,6 +19,7 @@
                     {!! Form::text('content' , null, ['class' => 'form-control']) !!}
                 </div>
                 
+                
                     {!! Form::submit('投稿', ['class' => 'btn btn-primary']) !!}
 
             {!! Form::close() !!}
