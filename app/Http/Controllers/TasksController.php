@@ -126,7 +126,7 @@ class TasksController extends Controller
         //バリデーション
         $request->validate([
             'status' => 'required|max:10',
-            'content' => 'required|max255',
+            'content' => 'required|max:255',
             
         ]);
         //idの値でタスクを検索して取得
@@ -134,7 +134,7 @@ class TasksController extends Controller
         //メッセージを更新
         $task->status = $request->status; //追加
         $task->content = $request->content;
-        $task->user_id = Auth::user()->id;//追加
+        $task->user_id = \Auth::user()->id;//追加
         $task->save();
         
         //トップページへリダイレクトさせる
@@ -158,6 +158,6 @@ class TasksController extends Controller
         }
         
         //前のURLへリダイレクトさせる
-        return back();
+        return redirect('/');
     }
 }
