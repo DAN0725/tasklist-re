@@ -17,8 +17,8 @@ class TasksController extends Controller
     {
         $data = [];
         if (\Auth::check()) { // 認証済みの場合
-            // 認証済みユーザを取得
-            $user = \Auth::user();
+        //ユーザを取得
+            $user = \Auth::user();   
             // ユーザの投稿の一覧を作成日時の降順で取得
             $tasks = $user->tasks()->orderBy('created_at', 'desc')->paginate(10);
 
@@ -43,13 +43,15 @@ class TasksController extends Controller
      //getでtasks/createにアクセスされた場合の「新規登録画面表示処理」
     public function create()
     {
-        //
+        if (\Auth::id() === $task->user_id) {
+            
         $task = new Task;
         
         //メッセージ作成ビューを表示
         return view('tasks.create',[
             'task' => $task,
             ]);
+        }    
     }
 
     /**
@@ -60,6 +62,11 @@ class TasksController extends Controller
      */
     public function store(Request $request)
     {
+    
+    
+    if (\Auth::id() === $task->user_id) {
+            
+        
        //バリデーション
        $request->validate([
            'status'  => 'required|max:10', //追加
@@ -75,6 +82,8 @@ class TasksController extends Controller
         
         //前のURLへリダイレクトさせる
         return redirect('/');
+        
+        }
     }
 
     /**
@@ -102,7 +111,11 @@ class TasksController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
+    
     {
+        //認証済みデータが投稿の所有者である場合に編集する
+        if (\Auth::id() === $task->user_id) {
+        
         //idの値でタスクを検索して取得
         $task = Task::findOrFail($id);
         
@@ -111,7 +124,7 @@ class TasksController extends Controller
             'task' => $task,
             ]);
         
-        
+        }
     }
 
     /**
@@ -129,6 +142,12 @@ class TasksController extends Controller
             'content' => 'required|max:255',
             
         ]);
+        
+        //認証済みデータが投稿の所有者である場合に更新する
+        if (\Auth::id() === $task->user_id) {
+            
+        
+        
         //idの値でタスクを検索して取得
         $task = Task::findOrFail($id);
         //メッセージを更新
@@ -136,6 +155,8 @@ class TasksController extends Controller
         $task->content = $request->content;
         $task->user_id = \Auth::user()->id;//追加
         $task->save();
+        
+        }
         
         //トップページへリダイレクトさせる
         return redirect('/');
