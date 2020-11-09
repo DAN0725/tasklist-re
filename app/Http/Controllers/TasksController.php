@@ -96,9 +96,12 @@ class TasksController extends Controller
     public function show($id)
     {
         
-        if (\Auth::id() === $task->user_id){
+        
         //idの値でタスクを検索して取得
         $task = Task::findOrFail($id);
+        
+        //認証済みデータが投稿の所有者である場合に編集する
+        if (\Auth::id() === $task->user_id) {
         
         
         //タスク詳細ビューでそれを表示
@@ -119,11 +122,13 @@ class TasksController extends Controller
     public function edit($id)
     
     {
-        //認証済みデータが投稿の所有者である場合に編集する
-        if (\Auth::id() === $task->user_id) {
+        
         
         //idの値でタスクを検索して取得
         $task = Task::findOrFail($id);
+        
+        //認証済みデータが投稿の所有者である場合に編集する
+        if (\Auth::id() === $task->user_id) {
         
         //タスク編集ビューでそれを表示
         return view('tasks.edit',[
@@ -151,13 +156,17 @@ class TasksController extends Controller
             
         ]);
         
-        //認証済みデータが投稿の所有者である場合に更新する
-        if (\Auth::id() === $task->user_id) {
+ 
             
         
         
         //idの値でタスクを検索して取得
         $task = Task::findOrFail($id);
+        
+        //認証済みデータが投稿の所有者である場合に更新する
+        if (\Auth::id() === $task->user_id) {
+        
+        
         //メッセージを更新
         $task->status = $request->status; //追加
         $task->content = $request->content;
