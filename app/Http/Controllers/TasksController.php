@@ -43,7 +43,7 @@ class TasksController extends Controller
      //getでtasks/createにアクセスされた場合の「新規登録画面表示処理」
     public function create()
     {
-        if (\Auth::id() === $task->user_id) {
+        
             
         $task = new Task;
         
@@ -51,7 +51,8 @@ class TasksController extends Controller
         return view('tasks.create',[
             'task' => $task,
             ]);
-        }    
+            
+ 
     }
 
     /**
@@ -64,7 +65,7 @@ class TasksController extends Controller
     {
     
     
-    if (\Auth::id() === $task->user_id) {
+    
             
         
        //バリデーション
@@ -83,7 +84,7 @@ class TasksController extends Controller
         //前のURLへリダイレクトさせる
         return redirect('/');
         
-        }
+        
     }
 
     /**
@@ -94,6 +95,8 @@ class TasksController extends Controller
      */
     public function show($id)
     {
+        
+        if (\Auth::id() === $task->user_id){
         //idの値でタスクを検索して取得
         $task = Task::findOrFail($id);
         
@@ -102,6 +105,9 @@ class TasksController extends Controller
         return view('tasks.show',[
             'task' => $task,
         ]);
+      }
+        //トップページへリダイレクトさせる
+        return redirect('/');
     }
 
     /**
@@ -125,6 +131,8 @@ class TasksController extends Controller
             ]);
         
         }
+        //トップページへリダイレクトさせる
+        return redirect('/');
     }
 
     /**
